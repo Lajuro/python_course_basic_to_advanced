@@ -50,3 +50,4 @@ Abaixo estão todas as aulas que eu fiz até o momento.
   - #### [2.04 - Funções - Escopo (Parte 4)](02_intermediate/aula4/aula4.py)
     - #### [2.04.1 - Exercício 1: Função que executa uma função passada como parâmetro](02_intermediate/aula4/exercicios/exercicio1.py)
     - #### [2.04.2 - Exercício 2: Função que executa uma função parametrizada passada como parâmetro](02_intermediate/aula4/exercicios/exercicio2.py)
+  - #### [2.05 - Funções - Lambda (Parte 5)](02_intermediate/aula5/aula5.py)
