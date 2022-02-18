@@ -46,3 +46,7 @@ Abaixo estão todas as aulas que eu fiz até o momento.
     - #### [2.02.1 - Exercício 2: Função soma de 3 números](02_intermediate/aula2/exercicios/exercicio2.py)
     - #### [2.02.1 - Exercício 3: Função de aumento percentual de um valor](02_intermediate/aula2/exercicios/exercicio3.py)
     - #### [2.02.1 - Exercício 4: Função FizzBuzz](02_intermediate/aula2/exercicios/exercicio4.py)
+  - #### [2.03 - Funções - *args **kwargs (Parte 3)](02_intermediate/aula3/aula3.py)
+  - #### [2.04 - Funções - Escopo (Parte 4)](02_intermediate/aula4/aula4.py)
+    - #### [2.04.1 - Exercício 1: Função que executa uma função passada como parâmetro](02_intermediate/aula4/exercicios/exercicio1.py)
+    - #### [2.04.2 - Exercício 2: Função que executa uma função parametrizada passada como parâmetro](02_intermediate/aula4/exercicios/exercicio2.py)
