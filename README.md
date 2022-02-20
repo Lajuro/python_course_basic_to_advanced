@@ -53,3 +53,4 @@ Abaixo estão todas as aulas que eu fiz até o momento.
   - #### [2.05 - Funções - Lambda (Parte 5)](02_intermediate/aula5/aula5.py)
   - #### [2.06 - Tuplas](02_intermediate/aula6/aula6.py)
   - #### [2.07 - Dicionários](02_intermediate/aula7/aula7.py)
+  - #### [2.07.1 - [Projeto] Sistema de perguntas e respostas com dicionários](02_intermediate/projeto1/projeto1.py)
