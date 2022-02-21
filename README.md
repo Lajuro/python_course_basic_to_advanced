@@ -55,3 +55,4 @@ Abaixo estão todas as aulas que eu fiz até o momento.
   - #### [2.07 - Dicionários](02_intermediate/aula7/aula7.py)
     - #### [2.07.1 - [Projeto] Sistema de perguntas e respostas com dicionários](02_intermediate/aula7/projeto1/projeto1.py)
   - #### [2.08 - Set (Conjuntos)](02_intermediate/aula8/aula8.py)
+    - #### [2.08.1 - Exercício 1: Encontre o primeiro duplicado em uma lista de números](02_intermediate/aula8/exercicios/exercicio1.py)
