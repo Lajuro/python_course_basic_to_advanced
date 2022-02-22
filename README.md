@@ -58,3 +58,4 @@ Abaixo estão todas as aulas que eu fiz até o momento.
     - #### [2.08.1 - Exercício 1: Encontre o primeiro duplicado em uma lista de números](02_intermediate/aula8/exercicios/exercicio1.py)
   - #### [2.09 - List Comprehension](02_intermediate/aula9/aula9.py)
     - #### [2.09.1 - Exercício 1: Fatiamento de String com List Comprehension](02_intermediate/aula9/exercicios/exercicio1.py)
+  - #### [2.10 - Dictionary Comprehension](02_intermediate/aula10/aula10.py)
