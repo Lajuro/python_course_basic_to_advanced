@@ -72,3 +72,4 @@ Abaixo estão todas as aulas que eu fiz até o momento.
   - #### [2.19 - Try... Exception... Else... Finally... - Lidando com exceções](02_intermediate/aula19/aula19.py)
   - #### [2.20 - Levantando exceções em Python (raise)](02_intermediate/aula20/aula20.py)
   - #### [2.21 - Usando try... except... como condicional](02_intermediate/aula21/aula21.py)
+  - #### [2.22 - Módulos padrões do Python](02_intermediate/aula22/aula22.py)
