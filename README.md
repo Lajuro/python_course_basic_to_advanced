@@ -81,3 +81,4 @@ Abaixo estão todas as aulas que eu fiz até o momento.
     - #### [2.27.1 - Exercício 1: Sistema de Tarefas](02_intermediate/aula27/exercicios/exercicio1.py)
 - ### 3. Classes - Programação Orientada a Objetos (POO)
   - #### [3.01 - Classes - Introdução](03_classes_oop/aula1/aula1.py)
+  - #### [3.02 - Classes - Métodos de classe](03_classes_oop/aula2/aula2.py)
