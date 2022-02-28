@@ -76,3 +76,4 @@ Abaixo estão todas as aulas que eu fiz até o momento.
   - #### [2.23 - Criação de módulos próprios](02_intermediate/aula23/aula23.py)
   - #### [2.24 - Criação de pacotes próprios](02_intermediate/aula24/aula24.py)
   - #### [2.25 - Manipulação de arquivos](02_intermediate/aula25/aula25.py)
+  - #### [2.26 - Funções decoradoras e decoradores](02_intermediate/aula26/aula26.py)
