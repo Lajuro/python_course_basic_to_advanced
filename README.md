@@ -68,3 +68,4 @@ Abaixo estão todas as aulas que eu fiz até o momento.
   - #### [2.15 - Groupby - Itertools](02_intermediate/aula15/aula15.py)
   - #### [2.16 - Map](02_intermediate/aula16/aula16.py)
   - #### [2.17 - Filter](02_intermediate/aula17/aula17.py)
+  - #### [2.17 - Reduce](02_intermediate/aula18/aula18.py)
