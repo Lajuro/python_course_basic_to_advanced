@@ -70,3 +70,4 @@ Abaixo estão todas as aulas que eu fiz até o momento.
   - #### [2.17 - Filter](02_intermediate/aula17/aula17.py)
   - #### [2.18 - Reduce](02_intermediate/aula18/aula18.py)
   - #### [2.19 - Try... Exception... Else... Finally... - Lidando com exceções](02_intermediate/aula19/aula19.py)
+  - #### [2.20 - Levantando exceções em Python (raise)](02_intermediate/aula20/aula20.py)
