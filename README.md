@@ -65,3 +65,4 @@ Abaixo estão todas as aulas que eu fiz até o momento.
     - #### [2.12 - Exercício 1: Soma de 2 arrays, somando até o tamanho da menor](02_intermediate/aula12/exercicios/exercicio1.py)
   - #### [2.13 - Count - Itertools](02_intermediate/aula13/aula13.py)
   - #### [2.14 - Combinations, Permutations e Product - Itertools](02_intermediate/aula14/aula14.py)
+  - #### [2.15 - Groupby - Itertools](02_intermediate/aula15/aula15.py)
