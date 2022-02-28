@@ -1,0 +1,1 @@
+print("O módulo vendas foi importado")
