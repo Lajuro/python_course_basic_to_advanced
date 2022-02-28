@@ -79,3 +79,5 @@ Abaixo estão todas as aulas que eu fiz até o momento.
   - #### [2.26 - Funções decoradoras e decoradores](02_intermediate/aula26/aula26.py)
   - #### [2.27 - Problema dos parâmetros mutáveis em funções](02_intermediate/aula27/aula27.py)
     - #### [2.27.1 - Exercício 1: Sistema de Tarefas](02_intermediate/aula27/exercicios/exercicio1.py)
+- ### 3. Classes - Programação Orientada a Objetos (POO)
+  - #### [3.01 - Classes - Introdução](03_classes_oop/aula1/aula1.py)
