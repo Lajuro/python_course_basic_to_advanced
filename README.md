@@ -84,3 +84,4 @@ Abaixo estão todas as aulas que eu fiz até o momento.
   - #### [3.02 - Classes - Métodos de classe](03_classes_oop/aula2/aula2.py)
   - #### [3.03 - Classes - Métodos estáticos](03_classes_oop/aula3/aula3.py)
   - #### [3.04 - Classes - Getters e Setters](03_classes_oop/aula4/aula4.py)
+  - #### [3.05 - Classes - Atributos de Classe](03_classes_oop/aula5/aula5.py)
