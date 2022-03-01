@@ -90,3 +90,4 @@ Abaixo estão todas as aulas que eu fiz até o momento.
   - #### [3.08 - Classes - Agregação](03_classes_oop/aula8/aula8.py)
   - #### [3.09 - Classes - Composição](03_classes_oop/aula9/aula9.py)
   - #### [3.10 - Classes - Herança Simples](03_classes_oop/aula10/aula10.py)
+  - #### [3.11 - Classes - Sobreposição de atributos e métodos](03_classes_oop/aula11/aula11.py)
