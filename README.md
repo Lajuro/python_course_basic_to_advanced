@@ -86,3 +86,4 @@ Abaixo estão todas as aulas que eu fiz até o momento.
   - #### [3.04 - Classes - Getters e Setters](03_classes_oop/aula4/aula4.py)
   - #### [3.05 - Classes - Atributos de Classe](03_classes_oop/aula5/aula5.py)
   - #### [3.06 - Classes - Encapsulamento](03_classes_oop/aula6/aula6.py)
+  - #### [3.07 - Classes - Associação](03_classes_oop/aula7/aula7.py)
