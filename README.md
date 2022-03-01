@@ -88,4 +88,5 @@ Abaixo estão todas as aulas que eu fiz até o momento.
   - #### [3.06 - Classes - Encapsulamento](03_classes_oop/aula6/aula6.py)
   - #### [3.07 - Classes - Associação](03_classes_oop/aula7/aula7.py)
   - #### [3.08 - Classes - Agregação](03_classes_oop/aula8/aula8.py)
-  - #### [3.08 - Classes - Composição](03_classes_oop/aula9/aula9.py)
+  - #### [3.09 - Classes - Composição](03_classes_oop/aula9/aula9.py)
+  - #### [3.10 - Classes - Herança Simples](03_classes_oop/aula10/aula10.py)
