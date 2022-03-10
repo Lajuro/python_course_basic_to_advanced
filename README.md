@@ -97,3 +97,4 @@ Abaixo estão todas as aulas que eu fiz até o momento.
     - ##### [3.13.1 - Exemplo 1: Modelagem de um sistema de banco](03_classes_oop/aula13/exemplos/exemplo1/main.py)
   - #### [3.14 - Classes - Polimorfismo](03_classes_oop/aula14/aula14.py)
   - #### [3.15 - Classes - Criando Exceções](03_classes_oop/aula15/aula15.py)
+  - #### [3.16 - Classes - Sobrecarga de Operadores](03_classes_oop/aula16/aula16.py)
