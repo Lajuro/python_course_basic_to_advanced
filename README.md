@@ -102,3 +102,4 @@ Abaixo estão todas as aulas que eu fiz até o momento.
   - #### [3.18 - Context Manager - Criando e Usando gerenciadores de contexto](03_classes_oop/aula18/aula18.py)
   - #### [3.19 - Classes - Metaclasses](03_classes_oop/aula19/aula19.py)
   - #### [3.20 - Classes - Dataclasses](03_classes_oop/aula20/aula20.py)
+  - #### [3.21 - Classes - Enum](03_classes_oop/aula21/aula21.py)
