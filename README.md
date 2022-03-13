@@ -100,3 +100,4 @@ Abaixo estão todas as aulas que eu fiz até o momento.
   - #### [3.16 - Classes - Sobrecarga de Operadores](03_classes_oop/aula16/aula16.py)
   - #### [3.17 - Classes - Métodos Mágicos](03_classes_oop/aula17/aula17.py)
   - #### [3.18 - Context Manager - Criando e Usando gerenciadores de contexto](03_classes_oop/aula18/aula18.py)
+  - #### [3.19 - Classes - Metaclasses](03_classes_oop/aula19/aula19.py)
