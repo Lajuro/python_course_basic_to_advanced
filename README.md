@@ -104,3 +104,5 @@ Abaixo estão todas as aulas que eu fiz até o momento.
   - #### [3.20 - Classes - Dataclasses](03_classes_oop/aula20/aula20.py)
   - #### [3.21 - Classes - Enum](03_classes_oop/aula21/aula21.py)
   - #### [3.22 - Implementando um iterator](03_classes_oop/aula22/aula22.py)
+- ### 4. PyQT5 - Interface Gráfica no Python - GUI para Desktop
+  - #### [4.01 - Primeiro contato](03_classes_oop/aula1/aula1.py)
