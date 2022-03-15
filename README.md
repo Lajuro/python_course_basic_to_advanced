@@ -107,3 +107,4 @@ Abaixo estão todas as aulas que eu fiz até o momento.
 - ### 4. PyQT5 — Interface Gráfica no Python — GUI para Desktop
   - #### [4.01 — Primeiro contato](04_pyqt5/aula1/aula1.py)
   - #### [4.02 — Criando uma calculadora com PyQT5](04_pyqt5/aula2/aula2.py)
+  - #### [4.03 — Redimensionador de imagens com PyQT5 e QtDesigner](04_pyqt5/aula3/aula3.py)
