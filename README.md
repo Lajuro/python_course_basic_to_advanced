@@ -110,3 +110,4 @@ Abaixo estão todas as aulas que eu fiz até o momento.
   - #### [4.03 — Redimensionador de imagens com PyQT5 e QtDesigner](04_pyqt5/aula3/aula3.py)
 - ### 5. Bases de Dados com Python - SQLite, MySQL e MariaDB
   - #### [5.01 — SQLite — Usando o módulo sqlite3](05_databases/aula1/aula1.py)
+  - #### [5.02 — SQLite — Python e sqlite3](05_databases/aula2/aula2.py)
