@@ -111,3 +111,4 @@ Abaixo estão todas as aulas que eu fiz até o momento.
 - ### 5. Bases de Dados com Python - SQLite, MySQL e MariaDB
   - #### [5.01 — SQLite — Usando o módulo sqlite3](05_databases/aula1/aula1.py)
   - #### [5.02 — SQLite — Python e sqlite3](05_databases/aula2/aula2.py)
+  - #### [5.03 — CRUD com PyMySQL no MySQL e MariaDB Server](05_databases/aula3/aula3.py)
