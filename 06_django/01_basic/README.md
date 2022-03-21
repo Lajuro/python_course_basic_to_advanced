@@ -46,7 +46,7 @@ Todos os aplicativos que forem criados podem ser criados dentro de um projeto Dj
 Para iniciar o servidor, basta executar o comando:
 
 ```shell
-    python manage.py runserver
+  python manage.py runserver
 ```
 
 Deve estar na mesma pasta do projeto Django.
@@ -54,7 +54,7 @@ Deve estar na mesma pasta do projeto Django.
 Caso desejar rodar numa porta diferente, basta executar o comando:
 
 ```shell
-    python manage.py runserver <porta>
+  python manage.py runserver <porta>
 ```
 
 ## Começar uma nova aplicação
