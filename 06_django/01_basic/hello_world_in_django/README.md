@@ -2,6 +2,12 @@
 
 Para criação de um projeto `Django`, é necessário ter o `Python 3.6` ou superior instalado.
 
+Para instalar o Django via pip, rode o comando abaixo:
+
+```shell
+  pip install django
+```
+
 O comando para criar um projeto Django é o seguinte:
 
 ```shell
