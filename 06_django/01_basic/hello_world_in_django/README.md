@@ -11,7 +11,7 @@ Para instalar o Django via pip, rode o comando abaixo:
 O comando para criar um projeto Django é o seguinte:
 
 ```shell
-    django-admin startproject <nome_do_projeto> <caminho_do_projeto>
+  django-admin startproject <nome_do_projeto> <caminho_do_projeto>
 ```
 
 ---
