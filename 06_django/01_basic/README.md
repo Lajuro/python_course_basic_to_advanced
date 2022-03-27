@@ -91,3 +91,21 @@ Com esses poucos passos já terá a aplicação criada e funcionando.
 1. No arquivo `settings.py`, dentro de `TEMPLATES`, defina o parâmetro `DIRS` com o caminho onde ficará a pasta de templates.
    - **Exemplo:** `TEMPLATES = [{'DIRS': [os.path.join(BASE_DIR, 'templates')]}]`
    - **Observação:** O caminho deve ser relativo ao diretório do projeto Django.
+
+### Como criar uma página home para a rota principal
+
+Existem duas formas de criar uma página home para a rota principal:
+
+1. Utilizar o próprio diretório do projeto Django.
+   1. No arquivo `urls.py`, adicione a URL `path('', views.<nome_do_metodo>)`, não esquecendo de importar o método `views`.
+   2. No arquivo `views.py`, crie um método com o nome `home` e retorne o template `home.html`.
+   3. Rode o comando `python manage.py runserver` para iniciar o servidor.
+   4. Acesse a URL `http://localhost:<porta>/`.
+2. Criar uma aplicação para a home.
+   1. Crie uma aplicação chamada `home` rodando o comando `python manage.py startapp home`.
+   2. Adicione no `INSTALLED_APPS` do arquivo `settings.py` a classe da aplicação `home` que será `home.apps.HomeConfig`.
+   3. No arquivo `urls.py`, adicione a URL `path('', include('home.urls'))`.
+   4. No arquivo `home/urls.py`, adicione a URL `path('', views.<nome_do_metodo>)`.
+   5. No arquivo `home/views.py`, crie um método com o nome `home` e retorne o template `home.html`.
+   6. Rode o comando `python manage.py runserver` para iniciar o servidor.
+   7. Acesse a URL informada na URL do arquivo `home/urls.py`.
