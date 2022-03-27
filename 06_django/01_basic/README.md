@@ -74,20 +74,20 @@ Para registrar a aplicação no projeto Django, deve adiciona-la na lista `INSTA
 
 ### Informações sobre o passo a passo para criar uma aplicação
 
-- 1. Rode o comando `python manage.py startapp <nome_da_aplicação>` para criar a aplicação.
-- 2. Adicione no `INSTALLED_APPS` do arquivo `settings.py` a classe da aplicação conforme está no arquivo `apps`.
-- 3. No arquivo `urls.py` adicione o include utilizando o comando `path('<caminho_para_a_aplicação>', include('<nome_da_aplicação>.urls'))`.
-- 4. Na aplicação criada, crie um arquivo `urls.py` e adicione as URLs da aplicação em uma lista de URLs utilizando o comando `path('<caminho_para_a_aplicação>', views.<nome_do_metodo>)`.
-- 5. No arquivo `views.py` crie um método com o nome informado na URL do arquivo `urls.py`.
-- 6. Caso esteja renderizando um template, crie um arquivo `templates/<nome_da_aplicação>/<nome_do_template>.html`.
-- 7. No arquivo `templates/<nome_da_aplicação>/<nome_do_template>.html` crie um bloco de HTML com o nome informado na URL do arquivo `urls.py`.
-- 8. Rode o comando `python manage.py runserver` para iniciar o servidor.
-- 9. Acesse a URL informada na URL do arquivo `urls.py`.
+1. Rode o comando `python manage.py startapp <nome_da_aplicação>` para criar a aplicação.
+2. Adicione no `INSTALLED_APPS` do arquivo `settings.py` a classe da aplicação conforme está no arquivo `apps`.
+3. No arquivo `urls.py` adicione o include utilizando o comando `path('<caminho_para_a_aplicação>', include('<nome_da_aplicação>.urls'))`.
+4. Na aplicação criada, crie um arquivo `urls.py` e adicione as URLs da aplicação em uma lista de URLs utilizando o comando `path('<caminho_para_a_aplicação>', views.<nome_do_metodo>)`.
+5. No arquivo `views.py` crie um método com o nome informado na URL do arquivo `urls.py`.
+6. Caso esteja renderizando um template, crie um arquivo `templates/<nome_da_aplicação>/<nome_do_template>.html`.
+7. No arquivo `templates/<nome_da_aplicação>/<nome_do_template>.html` crie um bloco de HTML com o nome informado na URL do arquivo `urls.py`.
+8. Rode o comando `python manage.py runserver` para iniciar o servidor.
+9. Acesse a URL informada na URL do arquivo `urls.py`.
 
 Com esses poucos passos já terá a aplicação criada e funcionando.
 
 ### Informação de como definir uma pasta de templates
 
-- 1. No arquivo `settings.py`, dentro de `TEMPLATES`, defina o parâmetro `DIRS` com o caminho onde ficará a pasta de templates.
+1. No arquivo `settings.py`, dentro de `TEMPLATES`, defina o parâmetro `DIRS` com o caminho onde ficará a pasta de templates.
    - **Exemplo:** `TEMPLATES = [{'DIRS': [os.path.join(BASE_DIR, 'templates')]}]`
    - **Observação:** O caminho deve ser relativo ao diretório do projeto Django.
