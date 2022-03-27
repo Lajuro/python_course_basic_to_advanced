@@ -115,4 +115,5 @@ Abaixo estão todas as aulas que eu fiz até o momento.
 - ### 6. Django no Python — Básico
   - #### [6.01 — Básico"](06_django/01_basic)
     - ##### [6.01.01 — Criando um site "Olá Mundo"](06_django/01_basic/hello_world_in_django)
-    - ##### [6.01.02 — Usando um template HTML em comum"](06_django/01_basic/vdjango)
+    - ##### [6.01.02 — Usando um template HTML em comum](06_django/01_basic/vdjango)
+    - ##### [6.01.03 — Arquivos estáticos (CSS, JS, IMG...)](06_django/01_basic/learning_static_files)

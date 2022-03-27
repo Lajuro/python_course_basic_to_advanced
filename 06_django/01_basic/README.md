@@ -109,3 +109,13 @@ Existem duas formas de criar uma página home para a rota principal:
    5. No arquivo `home/views.py`, crie um método com o nome `home` e retorne o template `home.html`.
    6. Rode o comando `python manage.py runserver` para iniciar o servidor.
    7. Acesse a URL informada na URL do arquivo `home/urls.py`.
+
+### Como configurar arquivos estáticos (CSS, JS, imagens)
+
+- Para configurar o seu projeto Django para utilizar arquivos estáticos (CSS, JS, imagens), deve-se adicionar o parâmetro `STATICFILES_DIRS` no arquivo `settings.py` e definir o caminho para o diretório onde os arquivos estáticos serão armazenados, por padrão, o caminho é `static`.
+  - **Exemplo:** `STATICFILES_DIRS = [os.path.join(BASE_DIR, 'templates/static')]` ou `STATICFILES_DIRS = [BASE_DIR / 'templates/static]`
+
+- Dentro do arquivo HTML, utilize `{% load static %}` para importar os arquivos estáticos. Para que o arquivo seja carregado, deve-se utilizar o comando `{% static '<nome_do_arquivo>' %}`.
+  - **Exemplo:** `{% static 'css/style.css' %}`
+
+- Mas também, sem nenhuma configuração, o Django irá carregar os arquivos estáticos automaticamente, para isso adicione uma pasta chamada `static` no diretório raiz do projeto e então coloque os arquivos estáticos dentro dela.
