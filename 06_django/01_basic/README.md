@@ -119,3 +119,17 @@ Existem duas formas de criar uma página home para a rota principal:
   - **Exemplo:** `{% static 'css/style.css' %}`
 
 - Mas também, sem nenhuma configuração, o Django irá carregar os arquivos estáticos automaticamente, para isso adicione uma pasta chamada `static` no diretório raiz do projeto e então coloque os arquivos estáticos dentro dela.
+
+### Carregando URLs dinamicamente
+
+- Para fazer isso, deve-se utilizar o terceiro parâmetro do método `path` do Django, o qual é o `name`.
+  - **Exemplo:** `path('<nome_da_url>', views.<nome_do_metodo>, name='<nome_da_url>')`
+  - **Observação:** O nome da URL deve ser único, para isso, deve-se utilizar o nome do método.
+- No arquivo HTML utilize o comando `{% url '<nome_da_url>' %}` para carregar a URL.
+  - **Exemplo:** `{% url '<nome_da_url>' %}`
+
+### Como criar partials (blocos de HTML)
+
+- Dentro da pasta `templates`, crie uma pasta chamada `partials`.
+- Dentro da pasta `partials`, crie um arquivo `_<nome_da_partial>.html` e adicione o bloco de HTML que deseja.
+- No arquivo que deseja carregar a partial, utilize o comando `{% include 'partials/_<nome_da_partial>.html' %}`.
