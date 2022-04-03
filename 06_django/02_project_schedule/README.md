@@ -195,3 +195,50 @@ No conteúdo da página, foi adicionado o seguinte:
 ```
 
 Após ter feito isso, pode rodar o comando `python manage.py runserver` para verificar se o app está funcionando.
+
+## Criando os Models
+
+### Banco de Dados
+
+Para configuração do banco de dados do Django, no arquivo `settings.py` na seção `DATABASES`, você irá encontrar as configurações do banco de dados, por padrão o Django utiliza o banco de dados `sqlite3`.
+
+### Modelo de Contato
+
+Para criar o modelo de contato, devemos no arquivo `models.py` da aplicação `contatos`, adicionar o seguinte:
+
+```python
+from django.db import models
+
+
+class Categoria(models.Model):
+    nome = models.CharField(max_length=255)
+
+
+class Contato(models.Model):
+    nome = models.CharField(max_length=255)
+    sobrenome = models.CharField(max_length=255)
+    telefone = models.CharField(max_length=20)
+    email = models.EmailField(max_length=255)
+    data_criacao = models.DateTimeField(auto_now_add=True)
+    descricao = models.TextField(blank=True, null=True)
+    categoria = models.ForeignKey(Categoria, on_delete=models.DO_NOTHING)
+```
+
+Observe que foi criado a classe `Categoria` e a classe `Contato`, e que estão relacionadas.
+
+Os tipos de dados que podem ser utilizados no Django são:
+
+- **CharField:** campo de texto
+- **TextField:** campo de texto grande
+- **EmailField:** campo de e-mail
+- **DateTimeField:** campo de data e hora
+- **ForeignKey:** campo de chave estrangeira
+
+Após a criação do modelo, devemos rodar o seguinte comando:
+
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
+
+Dessa forma, o Django criará o banco de dados e a estrutura de tabelas necessárias para o modelo.
