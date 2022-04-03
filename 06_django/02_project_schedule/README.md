@@ -298,3 +298,46 @@ def __str__(self):
 ```
 
 Isso pode ser feito para que exiba de uma forma melhor, pois por padrão irá exibir o nome do modelo, por exemplo, no modelo `Categoria`, será exibido `Categoria: <nome>`.
+
+## Exibindo valores nas views
+
+Para exibir valores nas views, devemos abrir o arquivo `views.py` da aplicação `contatos`, e no método que é renderizado, passamos um terceiro parâmetro, que é um dicionário, que será utilizado para passar valores para a view.
+
+Mas antes, é importante importar o modelo `Contato` e no método que é renderizado, adicionar uma variável `contatos` que receberá o objeto `Contato` que foi passado como parâmetro. Por exemplo:
+
+```python
+# Arquivo: views.py
+from .models import Contato
+
+def index(request):
+    contatos = Contato.objects.all()
+    return render(request, 'contatos/index.html', {'contato': contato})
+```
+
+E na view, devemos utilizar a variável `contatos` para exibir os valores. Por exemplo:
+
+```html
+<!-- Arquivo: templates/contatos/index.html -->
+<table>
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Sobrenome</th>
+            <th>E-mail</th>
+            <th>Categoria</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{ for contato in contatos }}
+        <tr>
+            <td><a href="/{{contato.id}}">{{contato.nome}}</a></td>
+            <td>{{ contato.sobrenome }}</td>
+            <td>{{ contato.email }}</td>
+            <td>{{ contato.categoria }}</td>
+        </tr>
+        {{ endfor }}
+    </tbody>
+</table>
+```
+
+Com isso, será renderizado uma tabela com os valores do modelo `Contato`.
