@@ -289,6 +289,7 @@ Abaixo uma breve descrição do que é cada uma das propriedades:
 - **search_fields:** campos que serão utilizados para pesquisar os objetos do modelo.
 - **list_filter:** campos que serão utilizados para filtrar os objetos do modelo.
 - **ordering:** campos que serão utilizados para ordenar os objetos do modelo.
+- **list_editable:** campos que serão utilizados para editar os objetos do modelo. 
 
 Outra coisa simples de se fazer, é definir como será exibido o modelo no Django Admin. Para isso, no modelo devemos ir para o model dele e adicionar o método `__str__`:
 
@@ -471,3 +472,59 @@ def get_contato(request, contato_id):
 ```
 
 Qualquer uma dessas maneiras irá te redirecionar para a página de erro 404 do Django.
+
+## Adicionando condicionais
+
+Para trabalhar com condicionais, utilizamos o método `if` do Django. Porém antes vamos adicionar um novo campo ao modelo `Contato`:
+
+```python
+# Arquivo: models.py
+
+class Contato(models.Model):
+    # [...]
+    mostrar = models.BooleanField(default=True)
+    
+    # [...]
+```
+
+> #### **Importante**
+> Antes de qualquer coisa, devemos sempre rodar o comando `python manage.py makemigrations` para criar as migrations e então rodar o comando `python manage.py migrate` para executar as migrations, sem isso as alterações não serão refletidas no banco de dados.
+
+No arquivo `admin.py` devemos adicionar o campo `mostrar` na listagem de dados:
+
+```python
+# Arquivo: admin.py
+
+# [...]
+
+class ContatoAdmin(admin.ModelAdmin):
+    list_display = ('id', 'nome', 'sobrenome', 'email', 'telefone', 'data_criacao', 'categoria', 'mostrar')  # Adicionado aqui
+    list_display_links = ('id', 'nome', 'sobrenome')
+    list_editable = ('telefone', 'mostrar',)  # Adicionado aqui
+    list_filter = ('categoria',)
+    search_fields = ('nome', 'email', 'telefone')
+    ordering = ('id',)
+    list_per_page = 5
+
+```
+
+Foi adicionado o atributo `list_editable` para que o campo `mostrar` seja editável na listagem de dados, sem precisar acessar a página do dado para alterá-lo.
+
+Agora para que os contatos sejam mostrados somente se o campo `mostrar` for verdadeiro, basta adicionar o filtro na listagem de dados:
+
+```html
+<!-- Arquivo: templates/contatos/index.html -->
+
+{% for contato in contatos %}
+{% if contato.mostrar %}
+<tr>
+    <td><a href="{% url 'get_contato' contato.id %}">{{ contato.nome }}</a></td>
+    <td>{{ contato.sobrenome }}</td>
+    <td>{{ contato.telefone }}</td>
+    <td>{{ contato.categoria }}</td>
+</tr>
+{% endif %}
+{% endfor %}
+```
+
+Desta forma, os dados serão mostrados somente se o campo `mostrar` for verdadeiro.
