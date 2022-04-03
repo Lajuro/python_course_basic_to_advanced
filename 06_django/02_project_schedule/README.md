@@ -431,3 +431,43 @@ Apenas um último detalhe, no arquivo `index.html`, devemos adicionar o link par
 ```
 
 O nome 'get_contato' é o nome passado no parâmetro `name` do método `url` da rota `<int:contato_id>` e o `contato.id` é o id do dado que será exibido.
+
+## Levantando erros 404
+
+Para fazer isso é extremamente simples e existem algumas formas de fazer.
+
+Uma maneira é utilizar o método `get_object_or_404` do Django, que retorna um objeto caso ele exista ou gera um erro 404 caso não exista. Por exemplo:
+
+```python
+# Arquivo: views.py
+from django.shortcuts import render, get_object_or_404
+from .models import Contato
+
+def get_contato(request, contato_id):
+    contato = get_object_or_404(Contato, id=contato_id)
+    return render(request, 'contatos/get_contato.html', {
+        'contato': contato
+    })
+
+```
+
+Outra maneira é utilizar a exception `DoesNotExist` do Django. Por exemplo:
+
+```python
+# Arquivo: views.py
+
+from django.http import Http404
+from django.shortcuts import render
+from .models import Contato
+
+def get_contato(request, contato_id):
+    try:
+        contato = Contato.objects.get(id=contato_id)
+        return render(request, 'contatos/get_contato.html', {
+            'contato': contato
+        })
+    except Contato.DoesNotExist:
+        raise Http404('Contato não encontrado')
+```
+
+Qualquer uma dessas maneiras irá te redirecionar para a página de erro 404 do Django.
