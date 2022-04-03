@@ -341,3 +341,93 @@ E na view, devemos utilizar a variável `contatos` para exibir os valores. Por e
 ```
 
 Com isso, será renderizado uma tabela com os valores do modelo `Contato`.
+
+## Exibindo valores de um único dado em uma view
+
+No arquivo `urls.py`, devemos criar uma rota para a view que exibe um único dado. Por exemplo, para exibir o dado de um `Contato` devemos utilizar a rota `<int:contato_id>`:
+
+```python
+# Arquivo: urls.py
+
+# [...]
+urlpatterns = [
+    path('', views.index, name='index'),
+    path('<int:contato_id>/', views.get_contato, name='get_contato'),
+]
+```
+
+Depois, no arquivo `views.py`, devemos criar o método que irá renderizar o dado. Para esse exemplo será criado um método com o nome `get_contato`:
+
+```python
+# Arquivo: views.py
+
+# [...]
+def get_contato(request, contato_id):
+    contato = Contato.objects.get(id=contato_id)
+    return render(request, 'contatos/get_contato.html', {'contato': contato})
+```
+
+Após isso, devemos criar a view que irá renderizar o dado. Para isso, devemos criar um arquivo `get_contato.html` na pasta `templates` da aplicação `contatos`:
+
+```html
+<!-- Arquivo: templates/contatos/get_contato.html -->
+<h1>{{contato.nome}} {{contato.sobrenome}}</h1>
+<dl>
+  <dt>ID</dt>
+  <dd>{{contato.id}}</dd>
+
+  <dt>Telefone</dt>
+  <dd>{{contato.telefone}}</dd>
+
+  <dt>E-mail</dt>
+  <dd>{{contato.email}}</dd>
+
+  <dt>Data criação</dt>
+  <dd>{{contato.data_criacao|date:'d/m/Y H:i:s'}}</dd>
+
+  <dt>Categoria</dt>
+  <dd>{{contato.categoria}}</dd>
+
+  <dt>Descrição</dt>
+  <dd>
+    {{contato.descricao}}
+  </dd>
+</dl>
+```
+
+### Método `date` do Django
+Observe que para a `Data de criação` utilizamos o método `date` do Django, que recebe como parâmetro um formato de data.
+
+Existem as seguintes possibilidades de formatos de `data e hora`:
+
+- **d**: dia, 2 dígitos
+- **m**: mês, 2 dígitos
+- **Y**: ano, 4 dígitos
+- **H**: hora, 2 dígitos
+- **i**: minuto, 2 dígitos
+- **s**: segundo, 2 dígitos
+
+Pronto, ao acessar a view, verá os dados renderizados conforme o id passada como parâmetro.
+
+Apenas um último detalhe, no arquivo `index.html`, devemos adicionar o link para a view que exibe um único dado. Por exemplo:
+
+```html
+<!-- Arquivo: templates/contatos/index.html -->
+
+[...]
+
+<tbody>
+{% for contato in contatos %}
+<tr>
+    <td><a href="{% url 'get_contato' contato.id %}">{{ contato.nome }}</a></td>
+    <td>{{ contato.sobrenome }}</td>
+    <td>{{ contato.telefone }}</td>
+    <td>{{ contato.categoria }}</td>
+</tr>
+{% endfor %}
+</tbody>
+
+[...]
+```
+
+O nome 'get_contato' é o nome passado no parâmetro `name` do método `url` da rota `<int:contato_id>` e o `contato.id` é o id do dado que será exibido.
