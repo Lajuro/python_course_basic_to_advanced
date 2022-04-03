@@ -242,3 +242,59 @@ python manage.py migrate
 ```
 
 Dessa forma, o Django criará o banco de dados e a estrutura de tabelas necessárias para o modelo.
+
+## Django Admin
+
+Para acessar o Django Admin, devemos acessar a URL `http://localhost:<porta>/admin/`.
+
+### Criando um super usuário
+
+Para criar um super usuário, devemos rodar o seguinte comando:
+
+```bash
+python manage.py createsuperuser
+```
+
+Será solicitado que digite o nome de usuário, e-mail, senha e a confirmação da senha, caso a senha seja fora dos padrões, será perguntado se deseja fazer o bypass da validação e criar o usuário mesmo assim, caso sim, digite `y`.
+
+Com o superuser criado, agora poderá acessar o Django Admin.
+
+### Criando um modelo no Django Admin
+
+No arquivo `admin.py` da aplicação `contatos`, adicionar o seguinte:
+
+```python
+from django.contrib import admin
+from .models import Categoria, Contato
+
+admin.site.register(Categoria)  # Registrando a classe `Categoria` no Django Admin
+admin.site.register(Contato)  # Registrando a classe `Contato` no Django Admin
+```
+
+Ao fazer isso, quando acessar o Django Admin, será apresentado os modelos `Categoria` e `Contato` da aplicação `contatos`.
+
+Após isso, você pode personalizar como será exibido os campos do modelo `Categoria` e `Contato` no Django Admin. Para isso, devemos criar uma classe para cada model com o sufixo `Admin`.
+
+```python
+class CategoriaAdmin(admin.ModelAdmin):
+    list_display = ('nome', 'data_criacao')
+    search_fields = ('nome',)
+    list_filter = ('data_criacao',)
+    ordering = ('-data_criacao',)
+```
+
+Abaixo uma breve descrição do que é cada uma das propriedades:
+
+- **list_display:** lista de campos que serão exibidos na listagem dos objetos do modelo.
+- **search_fields:** campos que serão utilizados para pesquisar os objetos do modelo.
+- **list_filter:** campos que serão utilizados para filtrar os objetos do modelo.
+- **ordering:** campos que serão utilizados para ordenar os objetos do modelo.
+
+Outra coisa simples de se fazer, é definir como será exibido o modelo no Django Admin. Para isso, no modelo devemos ir para o model dele e adicionar o método `__str__`:
+
+```python
+def __str__(self):
+    return self.nome
+```
+
+Isso pode ser feito para que exiba de uma forma melhor, pois por padrão irá exibir o nome do modelo, por exemplo, no modelo `Categoria`, será exibido `Categoria: <nome>`.
