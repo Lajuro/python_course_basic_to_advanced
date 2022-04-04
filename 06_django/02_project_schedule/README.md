@@ -528,3 +528,71 @@ Agora para que os contatos sejam mostrados somente se o campo `mostrar` for verd
 ```
 
 Desta forma, os dados serão mostrados somente se o campo `mostrar` for verdadeiro.
+
+## Adicionando paginação
+
+Para adicionar uma paginação, o Django já se dispõe de uma biblioteca chamada `Paginator` que permite fazer isso.
+
+Para isso, vamos abrir o arquivo `views.py` e importar a biblioteca `Paginator`:
+
+```python
+# Arquivo: views.py
+
+from django.core.paginator import Paginator
+
+```
+
+Então em nossa view `index`, vamos criar uma nova variavel com o nome `paginator` que recebe como valor o objeto `Paginator`:
+
+```python
+# Arquivo: views.py
+    
+    # [...]
+    def index(request):
+        contatos = Contato.objects.all()
+        paginator = Paginator(contatos, 3)
+    # [...]
+
+```
+
+Após isso, vamos pegar da URL o número da página passado no `query_params`, e com esse dado, vamos usar para pegar os dados da página e salvar na variavel `contatos`:
+
+```python
+# Arquivo: views.py
+    
+    # [...]
+    def index(request):
+        contatos = Contato.objects.all()
+        paginator = Paginator(contatos, 3)
+        
+        page = request.GET.get('page')
+        contatos = paginator.get_page(page)
+    # [...]
+
+```
+
+Observe que no `request.GET.get('page')` estamos pegando o parâmetro `page` da URL, esse nome pode ser qualquer nome desejado, porém caso seja alterado, é preciso referenciar corretamente no HTML.
+
+Para adicionar a paginação na página, abra o arquivo `templates/contatos/index.html` e adicione o código abaixo:
+
+```html
+<!-- Arquivo: templates/contatos/index.html -->
+
+<!-- [... Após a tag de fechamento </table> ...] -->
+<nav aria-label="Navegação da página">
+    <ul class="pagination">
+        {% for pagina in contatos.paginator.page_range %}
+        {% if contatos.number == pagina %}
+        <li class="page-item active"><a class="page-link" href="?page={{pagina}}">{{pagina}}</a></li>
+        {% else %}
+        <li class="page-item"><a class="page-link" href="?page={{pagina}}">{{pagina}}</a></li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+</nav>
+<!-- [...] -->
+```
+
+Utilizamos o `page_range` para recuperar a lista de páginas, e fizemos uma verificação para saber se o número atual da paginação, é a página que estamos, se sim, destaca-se com a classe `active` e se não, não se destaca.
+
+Todo esse HTML foi recuperado do exemplo do framework Bootstrap.
