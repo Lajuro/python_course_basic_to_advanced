@@ -628,3 +628,133 @@ Para ordernar de forma decrescente basta adicionar o parâmetro `-` antes do cam
 > 
 > ```
 
+## Adicionando um campo de pesquisa
+
+Para adicionar a funcionalidade de pesquisa na listagem dos contatos, podemos fazer o seguinte, primeiro no arquivo `base.html`, iremos adicionar o seguinte HTML:
+
+```html
+<!-- Arquivo: base.html -->
+
+<div class="col-lg-12">
+    <!-- O formulário foi inserido a partir daqui -->
+    <br><br>
+    <form method="get" action="{% url 'busca' %}">
+        <div class="form-group row">
+            <div class="col-12">
+                <input class="form-control"
+                       type="search" value="{{ request.GET.termo }}"
+                       id="search-input"
+                       placeholder="Digite sua pesquisa"
+                       name="termo">
+            </div>
+        </div>
+    </form>
+    <!-- O formulário encerra aqui -->
+
+    {% block 'conteudo' %}{% endblock %}
+</div>
+
+```
+
+Com esse formulário, já poderemos trabalhar com a pesquisa, observe que o `action` aponta para a url `busca`, e o `method` é `get`, ou seja, o formulário será enviado por GET, que é basicamente passar os parâmetros da pesquisa na URL.
+
+Além disso, observe que o `value` do input está como `{{ request.GET.termo }}`, ou seja, o valor do input será o que está na URL com o nome `termo`.
+
+### Configurações necessárias
+
+Para funcionar a pesquisa, é necessário alguns ajustes, começando pelo arquivo `urls.py`, nele iremos adicionar a url `busca`:
+
+```python
+# Arquivo: urls.py
+
+urlpatterns = [
+    # [...]
+    path('busca/', views.busca, name='busca'),
+    # [...]
+]
+
+```
+
+No arquivo `views.py`, adicionaremos o seguinte:
+
+```python
+# Arquivo: views.py
+
+def busca(request):
+    termo = request.GET.get('termo')
+    campos = Concat('nome', Value(' '), 'sobrenome')
+    print(termo)
+
+    if termo is None:
+        termo = ''
+
+    contatos = Contato.objects.annotate(
+        nome_completo=campos
+    ).filter(
+        Q(nome_completo__icontains=termo) | Q(telefone__icontains=termo) | Q(categoria__nome__icontains=termo),
+        mostrar=True
+    ).order_by('-id')
+
+    paginator = Paginator(contatos, 3)
+
+    page = request.GET.get('page')
+    contatos = paginator.get_page(page)
+
+    return render(request, 'contatos/busca.html', {
+        'contatos': contatos
+    })
+
+```
+
+Essa função que fará a mágica acontecer, só é necessário fazer os imports necessários:
+
+```python
+# Arquivo: views.py
+
+from django.db.models import Q, Value
+from django.db.models.functions import Concat
+
+# [...]
+
+```
+
+Na função `busca`, primeiro iremos pegar o termo que está na URL, e então criamos uma variável que irá montar a estrutura do `nome_completo`.
+
+Caso o termo não seja informado, o valor da variável será `''`, ou seja, não irá filtrar nada, isso para não quebrar na busca, pois `None` não é um valor válido para a pesquisa.
+
+Depois iremos fazer uma consulta no banco de dados, porém ao invés de usar o `order_by`, `all` ou `filter`, iremos usar o `annotate` para adicionar um campo que será usado na consulta, e esse campo será o `nome_completo`, que foi montado com o `Concat` do Django.
+
+No filtro, utilizamos o `Q`, nele podemos fazer consultas mais complexas, podendo usar o `|` para combinar as consultas, ou seja, se o termo for encontrado no nome, ou no telefone, ou na categoria, ou seja, se o termo estiver em qualquer um dos campos, então o contato será mostrado.
+
+Observe que é utilizando o `__icontains` para fazer a pesquisa, ou seja, a pesquisa irá verificar se o termo está contido no nome, telefone ou categoria. Sendo que a `categoria` é um campo do tipo `ForeignKey`, então a pesquisa irá verificar se o nome da categoria está contido no termo, observe que ficou `categoria__nome__icontains` e não `categoria__icontains`, de resto, tudo ficou igual.
+
+Agora que concluímos a configuração da função responsável por exibir a view, lembre-se de criar a view `busca.html` em `templates/contatos/`, e adicionar o seguinte:
+
+```html
+<!-- Arquivo: busca.html -->
+
+{% extends "contatos/index.html" %}
+```
+
+Ele será exatamente igual ao `index.html`, sem nenhuma diferença.
+
+No arquivo `index.html`, foram feitas algumas correções, a primeira é que não precisa mais do `if` que verifica se o `contato.mostrar` é `True`, e a segunda foi no link da paginação, foi feito o seguinte:
+
+```html
+<!-- Arquivo: index.html -->
+
+<nav aria-label="Paginação">
+    <ul class="pagination">
+        {% for pagina in contatos.paginator.page_range %}
+        {% if contatos.number == pagina %}
+        <li class="page-item active"><a class="page-link" href="?page={{pagina}}{% if request.GET.termo %}&termo={{ request.GET.termo }}{% endif %}">{{pagina}}</a></li>
+        {% else %}
+        <li class="page-item"><a class="page-link" href="?page={{pagina}}{% if request.GET.termo %}&termo={{ request.GET.termo }}{% endif %}">{{pagina}}</a></li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+</nav>
+
+```
+
+O `href` ficou como `href="?page={{pagina}}{% if request.GET.termo %}&termo={{ request.GET.termo }}{% endif %}"`, isso para que o link seja a página e, caso o termo seja informado, ele seja passado como parâmetro da URL também, para que nos casos em que não for passado o termo da pesquisa fique como `termo=`, que é desnecessário.
