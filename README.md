@@ -112,7 +112,7 @@ Abaixo estão todas as aulas que eu fiz até o momento.
   - #### [5.01 — SQLite — Usando o módulo sqlite3](05_databases/aula1/aula1.py)
   - #### [5.02 — SQLite — Python e sqlite3](05_databases/aula2/aula2.py)
   - #### [5.03 — CRUD com PyMySQL no MySQL e MariaDB Server](05_databases/aula3/aula3.py)
-- ### 6. Django no Python — Básico
+- ### 6. Django no Python
   - #### [6.01 — Básico"](06_django/01_basic)
     - ##### [6.01.01 — Criando um site "Olá Mundo"](06_django/01_basic/hello_world_in_django)
     - ##### [6.01.02 — Usando um template HTML em comum](06_django/01_basic/vdjango)
