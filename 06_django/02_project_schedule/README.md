@@ -596,3 +596,35 @@ Para adicionar a paginação na página, abra o arquivo `templates/contatos/inde
 Utilizamos o `page_range` para recuperar a lista de páginas, e fizemos uma verificação para saber se o número atual da paginação, é a página que estamos, se sim, destaca-se com a classe `active` e se não, não se destaca.
 
 Todo esse HTML foi recuperado do exemplo do framework Bootstrap.
+
+## Ordenando e filtrando valores
+
+Para ordenar e filtrar valores no Django, é extremamente simples, basta trocar de `Contatos.objects.all()` por `Contatos.objects.order_by('nome')`, e para filtrar basta adicionar o filtro, ficando então `Contatos.objects.order_by('nome').filter(mostrar=True)`.
+
+Para ordernar de forma decrescente basta adicionar o parâmetro `-` antes do campo que deseja ordenar. 
+
+**Por exemplo:** `Contatos.objects.order_by('-nome')`.
+
+
+> ## Correção de exibição de contato que está como `mostrar = False`
+> 
+> Caso tente acessar uma página de um contato que está como `mostrar = False`, você perceberá que está conseguindo abrir e isso não deveria acontecer. Para que isso não ocorra, é bem simples.
+> 
+> Na view `get_contato`, vamos adicionar um filtro para que seja mostrado somente os contatos que estão com o campo `mostrar` como `True`, caso contrário, retornará um página de erro 404.
+>
+> ```python
+> # Arquivo: views.py
+>     
+> # [...]
+> def get_contato(request, contato_id):
+>     contato = get_object_or_404(Contato, id=contato_id)
+>     if not contato.mostrar:
+>         raise Http404("Contato não encontrado")
+> 
+>     return render(request, 'contatos/get_contato.html', {
+>         'contato': contato
+>     })
+> # [...]
+> 
+> ```
+
