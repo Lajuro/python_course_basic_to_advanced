@@ -758,3 +758,80 @@ No arquivo `index.html`, foram feitas algumas correções, a primeira é que nã
 ```
 
 O `href` ficou como `href="?page={{pagina}}{% if request.GET.termo %}&termo={{ request.GET.termo }}{% endif %}"`, isso para que o link seja a página e, caso o termo seja informado, ele seja passado como parâmetro da URL também, para que nos casos em que não for passado o termo da pesquisa fique como `termo=`, que é desnecessário.
+
+## Como adicionar imagens
+
+Para adicionar imagens, primeiro temos que ir no arquivo `urls.py` do projeto e adicionar o seguinte:
+
+```python
+# Arquivo: urls.py
+# [...]
+from django.conf import settings
+from django.conf.urls.static import static
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('contatos/', include('contatos.urls')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+```
+
+Foram feitos os imports necessários, e no final do `urlpatterns`, adicionamos o `static` para que a imagem seja exibida na página.
+
+Além disso, estamos fazendo referencia a duas variáveis do Django, `settings.MEDIA_URL` e `settings.MEDIA_ROOT`, que são as variáveis que nos dizem o caminho para a pasta de imagens, e o caminho para a pasta de imagens consecutivamente.
+
+Então, no aquivo `settings.py`, temos que adicionar o seguinte, preferencialmente na seção `static`:
+
+```python
+# Arquivo: settings.py
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/4.0/howto/static-files/
+
+STATIC_URL = 'static/'
+STATICFILES_DIRS = [BASE_DIR / 'templates/static']
+
+#### Adicione as variáveis abaixo ####
+MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = 'media/'
+
+```
+
+Certo, agora temos tudo configurado no projeto, então podemos seguir com a adição de um novo campo no model `Contato`:
+
+```python
+# Arquivo: models.py
+
+class Contato(models.Model):
+    # [...]
+    foto = models.ImageField(upload_to='fotos/%Y/%m/%d', blank=True, null=True)
+```
+
+Agora que configuramos o model, temos que rodar os comandos `python manage.py makemigrations` e `python manage.py migrate` para que o campo seja adicionado no banco de dados. Ao fazer isso, poderá ver que agora existe um campo a mais ao acessar algum contato no `Django Admin`.
+
+Já existe a funcionalidade de adicionar imagem agora, mas agora temos que adicionar a imagem em algum usuário e configurar para ela ser exibida quando formos abrir um contato.
+
+No arquivo `get_contato.html`, temos que adicionar o seguinte:
+
+```html
+<!-- Arquivo: get_contato.html -->
+
+<!-- [...] -->
+<h1 class="mt-5">{{contato.nome}} {{contato.sobrenome}}</h1>
+
+<!-- Adicionar o que está abaixo -->
+{% if contato.foto %}
+<p>
+    <img src="{{contato.foto.url}}" style="max-width: 250px;"/>
+</p>
+{% endif %}
+<!-- Termina aqui o que foi inserido -->
+<dl>
+    <dt>ID</dt>
+    <dd>{{contato.id}}</dd>
+    
+    <!-- [...] -->
+
+```
+
+Após fazer isso, já deverá conseguir ver a imagem nos contatos que foi adicionado uma imagem.
