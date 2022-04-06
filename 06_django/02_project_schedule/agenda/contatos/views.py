@@ -1,9 +1,10 @@
 from django.http import Http404
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
 from .models import Contato
 from django.db.models import Q, Value
 from django.db.models.functions import Concat
+from django.contrib import messages
 
 
 def index(request):
@@ -23,8 +24,9 @@ def busca(request):
     campos = Concat('nome', Value(' '), 'sobrenome')
     print(termo)
 
-    if termo is None:
-        termo = ''
+    if termo is None or not termo:
+        messages.add_message(request, messages.DEBUG, 'Informe um termo para busca')
+        return redirect('index')
 
     contatos = Contato.objects.annotate(
         nome_completo=campos

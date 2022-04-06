@@ -835,3 +835,108 @@ No arquivo `get_contato.html`, temos que adicionar o seguinte:
 ```
 
 Após fazer isso, já deverá conseguir ver a imagem nos contatos que foi adicionado uma imagem.
+
+## Adicionar mensagens de feedback ao usuário
+
+Existe algo bem legal que pode ser feito, que é definir mensagens de feedback de uma determinada açao do usuário, para isso o Django disponibiliza uma função chamada `messages.add_message`, que recebe como parâmetro o request, o tipo de mensagem e o texto da mensagem.
+
+Para ficar de uma maneira mais dinâmica, vamos adicionar no arquivo `settings.py` o seguinte:
+
+```python
+# Arquivo: settings.py
+
+# Mensagens
+from django.contrib.messages import constants as messages
+
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger',
+    messages.WARNING: 'warning',
+    messages.DEBUG: 'dark',
+    messages.SUCCESS: 'success',
+    messages.INFO: 'info'
+}
+
+```
+
+Essas são as constantes que serão utilizadas para determinar o tipo de mensagem que queremos exibir.
+
+Vamos criar uma `partial` que irá exibir as mensagens existentes, crie então na pasta `partials` da pasta `templates` na raíz do projeto, um arquivo chamado `_messages.html`:
+
+```html
+<!-- Arquivo: partials/_messages.html -->
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+```
+
+Observe que verificamos se existe alguma variável `messages` na requisiçao, se tiver, para ser feito um loop em todas elas e exibí-las. Já nos alertas, exibe o tipo de alerta através do atributo `tags` que está dentro do objeto `message`. Já a mensagem fica dentro do próprio objeto `message`.
+
+### Configurando o template `base.html`
+
+No arquivo `base.html`, temos que adicionar o seguinte:
+
+```html
+<!-- Arquivo: base.html -->
+
+<!-- [...] -->
+</form>
+
+{% include 'partials/_messages.html' %}
+
+{% block 'conteudo' %}{% endblock %}
+<!-- [...] -->
+</div>
+
+```
+
+### Configurando a view `busca`
+
+No arquivo `views.py`, temos que adicionar o seguinte:
+
+```python
+# Arquivo: views.py
+
+# [...]
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
+
+# [...]
+
+def busca(request):
+    termo = request.GET.get('termo')
+    campos = Concat('nome', Value(' '), 'sobrenome')
+    print(termo)
+    
+    ### Foi modificado a verificação abaixo para dar um feedback ao usuário caso o campo estiver vazio
+    if termo is None or not termo:
+        messages.add_message(request, messages.DEBUG, 'Informe um termo para busca')
+        return redirect('index')
+    ### Termina aqui a modificação
+
+    contatos = Contato.objects.annotate(
+        nome_completo=campos
+    ).filter(
+        Q(nome_completo__icontains=termo) | Q(telefone__icontains=termo) | Q(categoria__nome__icontains=termo),
+        mostrar=True
+    ).order_by('-id')
+
+    paginator = Paginator(contatos, 3)
+
+    page = request.GET.get('page')
+    contatos = paginator.get_page(page)
+
+    return render(request, 'contatos/busca.html', {
+        'contatos': contatos
+    })
+
+```
+
+Observe que foi utilizado o `messages` do Django e nele foi utilizado o método `add_message` para adicionar uma mensagem de feedback ao usuário, onde o primeiro parâmetro é o request, o segundo é o tipo de mensagem e o terceiro é o texto da mensagem.
+
+Em seguida é feito o redirecionamento para a página inicial utilizando o método `redirect`, o parâmetro é o `name` da rota que será redirecionada.
