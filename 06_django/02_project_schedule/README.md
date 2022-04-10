@@ -940,3 +940,29 @@ def busca(request):
 Observe que foi utilizado o `messages` do Django e nele foi utilizado o método `add_message` para adicionar uma mensagem de feedback ao usuário, onde o primeiro parâmetro é o request, o segundo é o tipo de mensagem e o terceiro é o texto da mensagem.
 
 Em seguida é feito o redirecionamento para a página inicial utilizando o método `redirect`, o parâmetro é o `name` da rota que será redirecionada.
+
+## Como deixar o Django em Português
+
+Abra o arquivo `settings.py` e adicione o seguinte:
+
+```python
+# Arquivo: settings.py
+
+# Internationalization
+# https://docs.djangoproject.com/en/4.0/topics/i18n/
+
+LANGUAGE_CODE = 'pt-BR'
+
+TIME_ZONE = 'America/Sao_Paulo'
+
+USE_I18N = True
+
+USE_TZ = True
+```
+
+- `LANGUAGE_CODE` é a variável que define o idioma padrão do Django, no caso, o Português.
+- `TIME_ZONE` é a variável que define a zona padrão do Django, no caso, a zona de São Paulo.
+- `USE_I18N` é a variável que define se o Django deve ou não utilizar o sistema de internacionalização.
+- `USE_TZ` é a variável que define se o Django deve ou não utilizar o sistema de fuso horário.
+
+> Por padrão, o **Django** utiliza o idioma `en-US` e o fuso horário `UTC`.
