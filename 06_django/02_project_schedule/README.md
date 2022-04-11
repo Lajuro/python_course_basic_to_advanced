@@ -966,3 +966,216 @@ USE_TZ = True
 - `USE_TZ` é a variável que define se o Django deve ou não utilizar o sistema de fuso horário.
 
 > Por padrão, o **Django** utiliza o idioma `en-US` e o fuso horário `UTC`.
+
+## Configurando um Sistema de Login
+
+### Configurações iniciais
+Para começar essa configuração de um sistema de login, vamos criar uma nova aplicação chamada `accounts`, que será aplicada ao projeto. Para isso, rodamos o comando:
+
+```bash
+$ python manage.py startapp accounts
+```
+
+Após criar a aplicação `accounts`, vamos fazer as configurações inicias, que são:
+
+- No arquivo `settings.py` do projeto, em `INSTALLED_APPS`, adicionamos a aplicação `accounts` colocando `accounts.apps.AccountsConfig`;
+- No arquivo `urls.py` do projeto, adicionamos a rota `accounts/`, no `urlpatterns` colocando `path('accounts/', include('accounts.urls'))`;
+- Criamos o arquivo `urls.py` da aplicação `accounts`, e adicionamos o seguinte:
+
+```python
+# Arquivo: accounts/urls.py
+
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.login, name='index_login'),
+    path('login/', views.login, name='login'),
+    path('logout/', views.logout, name='logout'),
+    path('register/', views.register, name='register'),
+    path('dashboard/', views.dashboard, name='dashboard'),
+]
+
+```
+
+Com essas urls configuradas, vamos então acessar `accounts/views.py` e adicionar o seguinte:
+
+```python
+from django.shortcuts import render
+from django.contrib import messages
+
+
+def login(request):
+    return render(request, 'accounts/login.html')
+
+
+def logout(request):
+    return render(request, 'accounts/logout.html')
+
+
+def register(request):
+    return render(request, 'accounts/register.html')
+
+
+def dashboard(request):
+    return render(request, 'accounts/dashboard.html')
+
+```
+
+Agora que temos as views criadas, temos que criar a pasta `templates`, nela criar a pasta `accounts` e dentro dela criar o arquivo `login.html`, `logout.html`, `register.html` e `dashboard.html`.
+
+Observe que importamos o `messages` do Django para adicionar mensagens de feedback ao usuário.
+
+Com todos esses arquivos criados, agora temos apenas que colocar o conteúdo de cada arquivo, que será o seguinte:
+
+#### Login
+Responsável por mostrar o formulário de login e fazer o login do usuário.
+
+```html
+<!-- Arquivo: accounts/login.html -->
+
+{% extends 'base.html' %}
+
+{% block 'conteudo' %}
+<h1>Login</h1>
+{% endblock %}
+
+```
+
+#### Logout
+Responsável por deslogar o usuário.
+
+```html
+<!-- Arquivo: accounts/logout.html -->
+
+{% extends 'base.html' %}
+
+{% block 'conteudo' %}
+<h1>Logout</h1>
+{% endblock %}
+
+```
+
+#### Register
+Responsável pelo cadastro de novos usuários.
+
+```html
+<!-- Arquivo: accounts/register.html -->
+
+{% extends 'base.html' %}
+
+{% block 'conteudo' %}
+<h1>Register</h1>
+{% endblock %}
+
+```
+
+#### Dashboard
+Responsável por mostrar o painel do usuário.
+
+```html
+<!-- Arquivo: accounts/dashboard.html -->
+
+{% extends 'base.html' %}
+
+{% block 'conteudo' %}
+<h1>Dashboard</h1>
+{% endblock %}
+
+```
+
+### Criando a tela de cadastro
+
+No arquivo `accounts/register.html`, adicionamos o seguinte:
+
+```html
+<!-- Arquivo: accounts/register.html -->
+
+{% extends 'base.html' %}
+
+{% block 'conteudo' %}
+<h1 class="mt-3 mb-3">Cadastro</h1>
+
+<!-- Formulário de cadastro -->
+<!-- O método que será utilizado é o POST e será enviado para a URL `accounts/register/` -->
+<form method="POST" action="{% url 'register' %}">
+    <!-- Incluímos os alertas que serão listados através do `messages.add_message()` -->
+    {% include 'partials/_messages.html' %}
+    <!-- csrf_token é um token de segurança que é gerado automaticamente pelo Django -->
+    {% csrf_token %}
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="name">Nome</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="Digite seu nome">
+        </div>
+        <div class="form-group col-md-6">
+            <label for="lastname">Sobrenome</label>
+            <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Digite seu sobrenome">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="username">Usuário</label>
+        <input type="text" class="form-control" id="username" name="username" placeholder="Digite seu usuário">
+    </div>
+
+    <div class="form-group">
+        <label for="email">E-mail</label>
+        <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp"
+               placeholder="Digite seu e-mail">
+        <small id="emailHelp" class="form-text text-muted">Nunca compartilharemos o seu e-mail com mais ninguém.</small>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="password">Senha</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Digite sua senha">
+        </div>
+
+        <div class="form-group col-md-6">
+            <label for="password_confirmation">Confirmar senha</label>
+            <input type="password" class="form-control" id="password_confirmation" name="password_confirmation"
+                   placeholder="Confirme sua senha">
+        </div>
+    </div>
+
+
+    <button type="submit" class="btn btn-primary">Cadastrar</button>
+</form>
+
+{% endblock %}
+
+```
+
+Adicionamos o formulário que será utilizado para o cadastro de usuários, para que seja recebido os dados, é necessário passar o atributo `name` para cada campo.
+
+Apenas uma modificação que foi feita no arquivo `base.html`, foi adicionado um `if` para mostrar o campo de pesquisa somente se na rota não tiver o caminho `accounts`, da seguinte forma:
+
+```html
+<!-- Arquivo: base.html -->
+
+<!-- [...] -->
+<div class="col-lg-12">
+
+    {% if 'accounts' not in request.path %}
+    <form method="get" action="{% url 'busca' %}">
+        <div class="form-group row">
+            <div class="col-12">
+                <input class="form-control"
+                       type="search" value="{{ request.GET.termo }}"
+                       id="search-input"
+                       placeholder="Digite sua pesquisa"
+                       name="termo">
+            </div>
+        </div>
+    </form>
+
+    {% include 'partials/_messages.html' %}
+    {% endif %}
+
+    {% block 'conteudo' %}{% endblock %}
+</div>
+<!-- [...] -->
+```
+
+Foi apenas envolvido o campo de pesquisa com o critério `if 'accounts' not in request.path` para que o mesmo não apareça na tela de cadastro, login e dashboard.
+
