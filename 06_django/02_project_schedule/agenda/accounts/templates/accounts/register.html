@@ -3,27 +3,28 @@
 {% block 'conteudo' %}
 <h1 class="mt-3 mb-3">Cadastro</h1>
 
-<form method="POST" action="{% url 'register' %}">
+<form method="POST" action="{% url 'register' %}" autocomplete="off">
     {% include 'partials/_messages.html' %}
     {% csrf_token %}
     <div class="form-row">
         <div class="form-group col-md-6">
             <label for="name">Nome</label>
-            <input type="text" class="form-control" id="name" name="name" placeholder="Digite seu nome">
+            <input type="text" class="form-control" id="name" name="name" value="{{request.POST.name}}" placeholder="Digite seu nome">
         </div>
         <div class="form-group col-md-6">
             <label for="lastname">Sobrenome</label>
-            <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Digite seu sobrenome">
+            <input type="text" class="form-control" id="lastname" name="lastname" value="{{request.POST.lastname}}" placeholder="Digite seu sobrenome">
         </div>
     </div>
     <div class="form-group">
         <label for="username">Usuário</label>
-        <input type="text" class="form-control" id="username" name="username" placeholder="Digite seu usuário">
+        <input type="text" class="form-control" id="username" name="username" value="{{request.POST.username}}" placeholder="Digite seu usuário" aria-describedby="usernameHelp">
+        <small id="usernameHelp" class="form-text text-muted">O nome de usuário deve ter no mínimo 6 caracteres</small>
     </div>
 
     <div class="form-group">
         <label for="email">E-mail</label>
-        <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp"
+        <input type="email" class="form-control" id="email" name="email" value="{{request.POST.email}}" aria-describedby="emailHelp"
                placeholder="Digite seu e-mail">
         <small id="emailHelp" class="form-text text-muted">Nunca compartilharemos o seu e-mail com mais ninguém.</small>
     </div>
@@ -31,13 +32,14 @@
     <div class="form-row">
         <div class="form-group col-md-6">
             <label for="password">Senha</label>
-            <input type="password" class="form-control" id="password" name="password" placeholder="Digite sua senha">
+            <input type="password" class="form-control" id="password" name="password" aria-describedby="passwordHelp" autocomplete="off" placeholder="Digite sua senha">
+            <small id="passwordHelp" class="form-text text-muted">A senha precisa ser maior do que 8 caracteres.</small>
         </div>
 
         <div class="form-group col-md-6">
             <label for="password_confirmation">Confirmar senha</label>
             <input type="password" class="form-control" id="password_confirmation" name="password_confirmation"
-                   placeholder="Confirme sua senha">
+                   placeholder="Confirme sua senha"  autocomplete="off">
         </div>
     </div>
 

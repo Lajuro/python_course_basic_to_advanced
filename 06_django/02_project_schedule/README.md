@@ -1179,3 +1179,73 @@ Apenas uma modificação que foi feita no arquivo `base.html`, foi adicionado um
 
 Foi apenas envolvido o campo de pesquisa com o critério `if 'accounts' not in request.path` para que o mesmo não apareça na tela de cadastro, login e dashboard.
 
+## Criando função de criar usuário
+
+Para criação de usuário, vamos ao arquivo `accounts/views.py` e na função `register` adicionamos o seguinte:
+
+```python
+# Arquivo: accounts/views.py
+
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        lastname = request.POST.get('lastname')
+        email = request.POST.get('email')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        password_confirmation = request.POST.get('password_confirmation')
+
+        try:
+            if not name or not lastname or not email or not username or not password or not password_confirmation:
+                messages.error(request, 'Preencha todos os campos')
+
+            if len(name) < 2 or len(lastname) < 2:
+                messages.error(request, 'Nome e sobrenome devem ter mais de 2 caracteres')
+
+            if len(username) < 6:
+                messages.error(request, 'O nome de usuário deve ter no mínimo 6 caracteres')
+
+            if User.objects.filter(username=username).exists():
+                messages.error(request, 'O nome de usuário já existe')
+
+            if User.objects.filter(email=email).exists():
+                messages.error(request, 'O email já existe')
+
+            try:
+                validate_email(email)
+            except ValidationError as e:
+                messages.error(request, 'Email inválido')
+
+            if len(password) < 8:
+                messages.error(request, 'A senha deve ter no mínimo 8 caracteres')
+
+            if password != password_confirmation:
+                messages.error(request, 'As senhas não conferem')
+                return render(request, 'accounts/register.html', status=400)
+        except Exception as e:
+            return render(request, 'accounts/register.html', status=400)
+
+        user = User.objects.create_user(username=username, email=email, password=password, first_name=name, last_name=lastname)
+        user.save()
+
+        messages.success(request, 'Usuário cadastrado com sucesso')
+        return redirect('login')
+
+    return render(request, 'accounts/register.html')
+```
+
+- Primeiro então, pegamos todos os dados recebidos na requisição através do método `POST` e armazenamos em variáveis.
+- Verificamos se todos os campos foram preenchidos, caso não sejam, retornamos uma mensagem de erro.
+- Verificamos se o nome e sobrenome possuem mais de 2 caracteres, caso não sejam, retornamos uma mensagem de erro.
+- Verificamos se o nome de usuário possui pelo menos 6 caracteres, caso não seja, retornamos uma mensagem de erro.
+- Verificamos se o nome de usuário já existe, caso exista, retornamos uma mensagem de erro.
+- Verificamos se o email já existe, caso exista, retornamos uma mensagem de erro.
+- Verificamos se o email é válido, caso não seja, retornamos uma mensagem de erro.
+- Verificamos se a senha possui pelo menos 8 caracteres, caso não seja, retornamos uma mensagem de erro.
+- AVerificamos se as senhas são iguais, caso não sejam, retornamos uma mensagem de erro.
+- Caso passe por todas as validações, criamos o usuário, salvamos no banco de dados e retornamos uma mensagem de sucesso.
+- Redirecionamos o usuário para a tela de login.
+
+> **Nota:**
+> Foi feito uma pequena modificação no `register.html` para que quando ocorra algum erro, os campos voltem populados com os dados já preenchidos, utilizando `value="{{request.POST.NAME_DO_CAMPO}}"` para isso.
+> 
+> Além disso, nos campos de senha e usuário, foi adicionado um `aria-describedby="ID_CAMPO_AJUDA"` para que o usuário saiba como preencher o campo.
