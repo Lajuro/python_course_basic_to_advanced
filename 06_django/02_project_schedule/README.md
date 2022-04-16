@@ -1377,3 +1377,116 @@ Para a página de dashboard, foi criada da seguinte forma:
 ```
 
 A requisição já possui o objeto `user` com as informações do usuário logado, então basta adicionar o nome e sobrenome do usuário e o nome de usuário.
+
+# Criando formulário de cadastro de contatp
+
+Para criação do formulário de cadastro de contato, iremos utilizar o próprio formulário do Django, para isso devemos criar um novo modelo em `accounts/models.py` da seguinte forma:
+
+```python
+# Arquivo: accounts/models.
+
+from django.db import models
+from contatos.models import Contato
+from django import forms
+
+
+class FormContato(forms.ModelForm):
+    class Meta:
+        model = Contato
+        exclude = ('mostrar',)
+```
+
+Fazendo isso, já poderemos utilizar esse modelo para criar o formulário de cadastro de contato em nossa `view` no `dashboard`.
+
+Acesse o arquivo `accounts/views.py` e na função `dashboard` adicionamos o seguinte:
+
+```python
+# Arquivo: accounts/views.py
+
+@login_required(login_url='login')
+def dashboard(request):
+    if request.method != 'POST':
+        form = FormContato()
+        return render(request, 'accounts/dashboard.html', {'form': form})
+
+    form = FormContato(request.POST, request.FILES)
+
+    try:
+        descricao = request.POST.get('descricao')
+        nome = request.POST.get('nome')
+
+        if len(descricao) < 5:
+            messages.error(request, 'A descrição deve ter no mínimo 5 caracteres')
+
+        if not form.is_valid():
+            messages.error(request, 'Erro ao enviar formulário')
+
+        if messages.get_messages(request):
+            raise Exception('Validation error')
+
+        form.save()
+        messages.success(request, f'Contato {nome} salvo com sucesso!')
+
+        return render(request, 'accounts/dashboard.html', {'form': form})
+    except Exception as e:
+
+        return render(request, 'accounts/dashboard.html', {'form': form})
+
+```
+
+- Verifica se o método é diferente de `POST`, se for, retorna o formulário vazio.
+- Armazena na variável `form` os dados recebidos pelo formulário.
+- Dentro do bloco `try`, fazemos algumas validações antes de salvar o formulário.
+- Recuperamos os campos `nome` e `descricao` do formulário para que sejam usados posteriormente.
+- Validamos se o campo `descricao` possui menos de 5 caracteres, caso tenha, adicionamos uma mensagem de erro.
+- Verificamos se o formulário é válido, caso não seja, adicionamos uma mensagem de erro.
+- Verificamos se existe alguma mensagem de erro, caso exista, retornamos o formulário com as mensagens de erro.
+- Caso não exista mensagens de erro, salvamos o formulário e retornamos o formulário com a mensagem de sucesso.
+
+> **Nota:**
+> 
+> É importante importar `from .models import FormContato` para que o formulário funcione.
+
+### Configurando a página de Dashboard do usuário
+
+Agora vamos utilizar o formulário que foi passado como variável na view `dashboard` para criar a página de dashboard do usuário.
+
+Essa variável carrega consigo toda a estrutura do formulário que será utilizado para criar o contato. Foi configurado da seguinte forma:
+
+```html
+<!-- Arquivo: accounts/templates/accounts/dashboard.html -->
+
+{% extends 'base.html' %}
+
+{% block 'title' %}Dashboard | {% endblock %}
+{% block 'conteudo' %}
+
+<h1>Dashboard</h1>
+
+{% include 'partials/_messages.html' %}
+
+<h5>Bem vindo(a), {{ user.first_name }} {{ user.last_name }}!</h5>
+<p>{{ user.username }}</p>
+<a class="btn btn-danger" href="{% url 'logout' %}">Logout</a>
+
+<div class="container">
+    <form action="{% url 'dashboard' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table>
+            {{ form }}
+            <tr>
+                <td colspan="2">
+                    <input type="submit" value="Salvar" class="btn btn-primary">
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+{% endblock %}
+```
+
+- Foi criado um container onde ficará armazenado o formulário, este formulário será enviado para a própria página, porém utilizando o método `POST`.
+- É importante no formulário, adicionar o campo `csrf_token` para que o Django possa validar o formulário.
+- No formulário, foi criado a tabela que receberá o formulário, que vem no formato tabela como padrão.
+- Para que seja gerado o formulário, foi utilizado o método `{{ form }}` para que o Django possa gerar o formulário.

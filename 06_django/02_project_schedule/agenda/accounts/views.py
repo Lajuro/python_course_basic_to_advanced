@@ -4,10 +4,10 @@ from django.contrib import messages, auth
 from django.core.validators import validate_email
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from .models import FormContato
 
 
 def login(request):
-
     if auth.get_user(request).is_authenticated:
         messages.success(request, 'Você já está logado')
         return redirect('dashboard')
@@ -86,7 +86,8 @@ def register(request):
         except Exception as e:
             return render(request, 'accounts/register.html', status=400)
 
-        user = User.objects.create_user(username=username, email=email, password=password, first_name=name, last_name=lastname)
+        user = User.objects.create_user(username=username, email=email, password=password, first_name=name,
+                                        last_name=lastname)
         user.save()
 
         messages.success(request, 'Usuário cadastrado com sucesso')
@@ -97,4 +98,29 @@ def register(request):
 
 @login_required(login_url='login')
 def dashboard(request):
-    return render(request, 'accounts/dashboard.html')
+    if request.method != 'POST':
+        form = FormContato()
+        return render(request, 'accounts/dashboard.html', {'form': form})
+
+    form = FormContato(request.POST, request.FILES)
+
+    try:
+        descricao = request.POST.get('descricao')
+        nome = request.POST.get('nome')
+
+        if len(descricao) < 5:
+            messages.error(request, 'A descrição deve ter no mínimo 5 caracteres')
+
+        if not form.is_valid():
+            messages.error(request, 'Erro ao enviar formulário')
+
+        if messages.get_messages(request):
+            raise Exception('Validation error')
+
+        form.save()
+        messages.success(request, f'Contato {nome} salvo com sucesso!')
+
+        return render(request, 'accounts/dashboard.html', {'form': form})
+    except Exception as e:
+
+        return render(request, 'accounts/dashboard.html', {'form': form})
