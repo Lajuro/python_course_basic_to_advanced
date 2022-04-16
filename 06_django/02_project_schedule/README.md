@@ -1249,3 +1249,131 @@ Para criação de usuário, vamos ao arquivo `accounts/views.py` e na função `
 > Foi feito uma pequena modificação no `register.html` para que quando ocorra algum erro, os campos voltem populados com os dados já preenchidos, utilizando `value="{{request.POST.NAME_DO_CAMPO}}"` para isso.
 > 
 > Além disso, nos campos de senha e usuário, foi adicionado um `aria-describedby="ID_CAMPO_AJUDA"` para que o usuário saiba como preencher o campo.
+
+## Criando função de login
+
+Para a parte de login, vamos ao arquivo `accounts/views.py` e na função `login` adicionamos o seguinte:
+
+```python
+# Arquivo: accounts/views.py
+def login(request):
+        if auth.get_user(request).is_authenticated:
+        messages.success(request, 'Você já está logado')
+        return redirect('dashboard')
+
+    if request.method != 'POST':
+        return render(request, 'accounts/login.html')
+
+    try:
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        if not username or not password:
+            messages.error(request, 'Preencha todos os campos')
+
+        user = auth.authenticate(request, username=username, password=password)
+
+        if not user:
+            messages.error(request, 'Usuário ou senha incorretos')
+
+        if messages.get_messages(request):
+            raise Exception('Validation error')
+
+        auth.login(request, user)
+        messages.success(request, 'Logado com sucesso')
+        return redirect('dashboard')
+
+    except Exception as e:
+        return render(request, 'accounts/login.html', status=400)
+```
+
+- Primeiro então, verificamos se o usuário já está logado, caso esteja, retornamos uma mensagem de sucesso e redirecionamos para a tela de dashboard.
+- Verificamos se o método da requisição é `POST`, caso não seja, adicionamos a tela de login.
+- Verificamos se o usuário e senha foram preenchidos, caso não sejam, adicionamos uma mensagem de erro.
+- Verificamos se é possível autenticar o usuário, caso não seja, adicionamos uma mensagem de erro.
+- Verificamos se há alguma mensagem de erro, caso exista, é levantado uma exceção. e então retornamos todas as mensagens de erro.
+- Caso não haja nenhum erro, autenticamos o usuário e adicionamos uma mensagem de sucesso e redirecionamos para a tela de dashboard.
+
+### Validando se o usuário está logado
+
+Para que a página de dashboard seja acessada apenas se o usuário estiver logado, vamos ao arquivo `accounts/views.py` e na função `dashboard` adicionamos o `@login_required`, passando como parametro o nome da url que será redirecionada caso o usuário não esteja logado:
+
+```python
+# Arquivo: accounts/views.py
+
+@login_required(login_url='login')
+def dashboard(request):
+    return render(request, 'accounts/dashboard.html')
+```
+
+E necessário importar o decorator `login_required` do módulo `django.contrib.auth.decorators`.
+
+A página de login foi criada da seguinte forma:
+
+```html
+<!-- Arquivo: accounts/templates/accounts/login.html -->
+
+{% extends 'base.html' %}
+
+{% block 'conteudo' %}
+<h1 class="mt-3 mb-3">Login</h1>
+
+<form method="POST" action="{% url 'login' %}" autocomplete="off">
+    {% include 'partials/_messages.html' %}
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="username">Usuário</label>
+        <input type="text" class="form-control" id="username" name="username" value="{{request.POST.username}}" placeholder="Digite seu usuário">
+    </div>
+
+    <div class="form-group">
+        <label for="password">Senha</label>
+        <input type="password" class="form-control" id="password" name="password" autocomplete="off" placeholder="Digite sua senha">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Entrar</button>
+</form>
+
+{% endblock %}
+
+```
+
+E assim então, a página de login está pronta.
+
+## Criando função de logout
+
+Para realizar o `logout`, em `accounts/views.py` adicionamos a seguinte função:
+
+```python
+# Arquivo: accounts/views.py
+
+def logout(request):
+    auth.logout(request)
+    messages.success(request, 'Deslogado com sucesso')
+    return redirect('login')
+```
+
+- Através da função `logout`, do `auth` do django, realizamos o logout do usuário.
+- Adicionamos uma mensagem de sucesso.
+- Redirecionamos para a página de login.
+
+## Dashboard do usuário logado
+
+Para a página de dashboard, foi criada da seguinte forma:
+
+```html
+<!-- Arquivo: accounts/templates/accounts/dashboard.html -->
+
+{% extends 'base.html' %}
+
+{% block 'conteudo' %}
+<h1>Dashboard</h1>
+{% include 'partials/_messages.html' %}
+<h2>Bem vindo {{ user.first_name }} {{ user.last_name }}</h2>
+<p>{{ user.username }}</p>
+<a class="btn btn-danger" href="{% url 'logout' %}">Logout</a>
+
+{% endblock %}
+```
+
+A requisição já possui o objeto `user` com as informações do usuário logado, então basta adicionar o nome e sobrenome do usuário e o nome de usuário.

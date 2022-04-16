@@ -1,16 +1,47 @@
 from django.core.exceptions import ValidationError
 from django.shortcuts import render, redirect
-from django.contrib import messages
+from django.contrib import messages, auth
 from django.core.validators import validate_email
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 
 
 def login(request):
-    return render(request, 'accounts/login.html')
+
+    if auth.get_user(request).is_authenticated:
+        messages.success(request, 'Você já está logado')
+        return redirect('dashboard')
+
+    if request.method != 'POST':
+        return render(request, 'accounts/login.html')
+
+    try:
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        if not username or not password:
+            messages.error(request, 'Preencha todos os campos')
+
+        user = auth.authenticate(request, username=username, password=password)
+
+        if not user:
+            messages.error(request, 'Usuário ou senha incorretos')
+
+        if messages.get_messages(request):
+            raise Exception('Validation error')
+
+        auth.login(request, user)
+        messages.success(request, 'Logado com sucesso')
+        return redirect('dashboard')
+
+    except Exception as e:
+        return render(request, 'accounts/login.html', status=400)
 
 
 def logout(request):
-    return render(request, 'accounts/logout.html')
+    auth.logout(request)
+    messages.success(request, 'Deslogado com sucesso')
+    return redirect('login')
 
 
 def register(request):
@@ -49,6 +80,9 @@ def register(request):
             if password != password_confirmation:
                 messages.error(request, 'As senhas não conferem')
                 return render(request, 'accounts/register.html', status=400)
+
+            if messages.get_messages(request):
+                raise Exception('Validation error')
         except Exception as e:
             return render(request, 'accounts/register.html', status=400)
 
@@ -61,5 +95,6 @@ def register(request):
     return render(request, 'accounts/register.html')
 
 
+@login_required(login_url='login')
 def dashboard(request):
     return render(request, 'accounts/dashboard.html')
